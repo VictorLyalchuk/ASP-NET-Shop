@@ -25,6 +25,11 @@
             <label asp-for="ImagePath" class="form-label">Image Path URL</label>
             <input asp-for="ImagePath" type="url" class="form-control">
         </div>
+@*        <div class="col-md-6">
+            <label asp-for="StorageId" class="form-label">Storage Quantity</label>
+            <input asp-for="StorageId" type="number" step="1" class="form-control">
+            <span asp-validation-for="StorageId" class="form-text text-danger"></span>
+        </div>*@
         <div class="col-md-6">
             <label asp-for="CategoryId" class="form-label">Category</label>
             <select asp-for="CategoryId" asp-items="@ViewBag.ListCategory" class="form-select">

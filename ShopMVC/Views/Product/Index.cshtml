@@ -41,7 +41,7 @@
                                 <img src="@(product.ImagePath??productImagePlaceholder)" height="50" @*class="card-img-top"*@ alt="..." >
                             </td>
                             <td>@product.Name</td>
-                            <td>@product.Price</td>
+                            <td>@string.Format("{0:N}",product.Price) ₴</td>
                             <td>@product.Category?.Name</td>
                             <td>
                                 <div class="d-flex justify-content-evenly">
@@ -50,19 +50,13 @@
                                     </a>
                                     @if (@User.IsInRole("Admin"))
                                     {
-                                        <a asp-controller="Product" asp-action="Edit" asp-route-id=@product.Id class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover me-2">
-                                            @*Edit*@
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
+
 
                                     <a asp-controller="Product" asp-action="Edit" asp-route-id=@product.Id class="btn btn-success">
                                         @*Edit*@
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a asp-controller="Product" asp-action="Delete" asp-route-id=@product.Id class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover me-2">
-                                        @*Delete*@
-                                        <i class="bi bi-trash"></i>
-                                    </a>
+
                                     <a asp-controller="Product" asp-action="Delete" asp-route-id=@product.Id class="btn btn-dark">
                                         @*Delete*@
                                         <i class="bi bi-trash"></i>

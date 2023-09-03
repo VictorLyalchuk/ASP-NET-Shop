@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ShopMVCDbContext))]
-    partial class ShopMVCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230903171411_AddStorageToProduct")]
+    partial class AddStorageToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,7 +120,7 @@ namespace DataAccess.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("StorageId")
+                    b.Property<int>("StorageId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -134,7 +137,8 @@ namespace DataAccess.Migrations
                             Description = "A715-42G-R3EZ (NH.QBFEU.00C) Charcoal Black / AMD Ryzen 5 5500U / RAM 16 ГБ / SSD 512 ГБ / nVidia GeForce GTX 1650",
                             ImagePath = "https://content2.rozetka.com.ua/goods/images/big/343096346.jpg",
                             Name = "Ноутбук Acer Aspire 7",
-                            Price = 28999m
+                            Price = 28999m,
+                            StorageId = 0
                         },
                         new
                         {
@@ -143,7 +147,8 @@ namespace DataAccess.Migrations
                             Description = "X515EA-BQ2066 (90NB0TY1-M00VF0) Slate Grey / 15.6\" IPS Full HD / Intel Core i3-1115G4 / RAM 12 ГБ / SSD 512 ГБ",
                             ImagePath = "https://content2.rozetka.com.ua/goods/images/big/347802389.jpg",
                             Name = "Ноутбук ASUS Laptop",
-                            Price = 16588m
+                            Price = 16588m,
+                            StorageId = 0
                         },
                         new
                         {
@@ -152,7 +157,8 @@ namespace DataAccess.Migrations
                             Description = "Екран 15.6\" IPS (1920x1080) Full HD, матовий / AMD Ryzen 3 7320U (2.4 - 4.1 ГГц) / RAM 16 ГБ / SSD 512 ГБ / AMD Radeon 610M Graphics / без ОД / Wi-Fi / Bluetooth / веб-камера / без ОС / 1.58 кг / сірий",
                             ImagePath = "https://content1.rozetka.com.ua/goods/images/big/334484472.jpg",
                             Name = "Ноутбук Lenovo IdeaPad 1 15AMN7 (82VG00HHRA)",
-                            Price = 19999m
+                            Price = 19999m,
+                            StorageId = 0
                         },
                         new
                         {
@@ -161,7 +167,8 @@ namespace DataAccess.Migrations
                             Description = "A715-42G-R3EZ (NH.QBFEU.00C) Charcoal Black / AMD Ryzen 5 5500U / RAM 16 ГБ / SSD 512 ГБ / nVidia GeForce GTX 1650",
                             ImagePath = "https://content1.rozetka.com.ua/goods/images/big/342769719.jpg",
                             Name = "Ноутбук Acer Aspire 5",
-                            Price = 42788m
+                            Price = 42788m,
+                            StorageId = 0
                         },
                         new
                         {
@@ -170,7 +177,8 @@ namespace DataAccess.Migrations
                             Description = "Екран (6.5\", Super AMOLED, 2340x1080) / Mediatek Helio G99 (2 x 2.6 ГГц + 6 x 2.0 ГГц) / основна потрійна камера: 50 Мп + 5 Мп + 2 Мп, фронтальна камера: 13 Мп / RAM2 ГБ вбудованої пам'яті + microSD (до 1 ТБ) / 3G / LTE / GPS / ГЛОНАСС / BDS / підтримка 2х SIM-карток (Nano-SIM) / Android 13 / 5000 мА * год",
                             ImagePath = "https://content.rozetka.com.ua/goods/images/big/328132324.jpg",
                             Name = "Мобільний телефон Samsung Galaxy A24 6/128GB Black (SM-A245FZKVSEK)",
-                            Price = 8999m
+                            Price = 8999m,
+                            StorageId = 0
                         },
                         new
                         {
@@ -179,7 +187,8 @@ namespace DataAccess.Migrations
                             Description = "Екран (6.1\", OLED (Super Retina XDR), 2532x1170) / Apple A15 Bionic / подвійна основна камера: 12 Мп + 12 Мп, фронтальна камера: 12 Мп / 128 ГБ вбудованої пам'яті / 3G / LTE / 5G / GPS / підтримка 2 SIM-карток (eSIM) / iOS 16\r\n\r\n",
                             ImagePath = "https://content1.rozetka.com.ua/goods/images/big/284913535.jpg",
                             Name = "Мобільний телефон Apple iPhone 14 128GB Midnight (MPUF3RX/A)",
-                            Price = 36999m
+                            Price = 36999m,
+                            StorageId = 0
                         });
                 });
 
@@ -194,10 +203,10 @@ namespace DataAccess.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductQuantity")
+                    b.Property<int?>("ProductId1")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductsId")
+                    b.Property<int>("ProductQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -206,7 +215,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[ProductId] IS NOT NULL");
 
-                    b.HasIndex("ProductsId");
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("Storage");
                 });
@@ -452,11 +461,11 @@ namespace DataAccess.Migrations
                         .WithOne("Storage")
                         .HasForeignKey("DataAccess.Entities.Storage", "ProductId");
 
-                    b.HasOne("DataAccess.Entities.Product", "Products")
+                    b.HasOne("DataAccess.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductsId");
+                        .HasForeignKey("ProductId1");
 
-                    b.Navigation("Products");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -517,7 +526,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Product", b =>
                 {
-                    b.Navigation("Storage");
+                    b.Navigation("Storage")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccess.Entities.User", b =>

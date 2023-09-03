@@ -29,12 +29,17 @@
             <input asp-for="ImagePath" type="text" class="form-control" >
             <span asp-validation-for="ImagePath" class="form-text text-danger"></span>
         </div>
+@*        <div class="col-md-6">
+            <label asp-for="StorageId" class="form-label">Storage Quantity</label>
+            <input asp-for="StorageId" type="number" step="1"  class="form-control">
+            <span asp-validation-for="StorageId" class="form-text text-danger"></span>
+        </div>*@
          <div class="col-md-6">
             <label asp-for="CategoryId" class="form-label">Category</label>
             <select asp-for="CategoryId" asp-items="@ViewBag.ListCategory" class="form-select">
                
             </select>
-            <span asp-validation-for="Name" class="form-text text-danger"></span>
+            <span asp-validation-for="CategoryId" class="form-text text-danger"></span>
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Create</button>

@@ -48,13 +48,7 @@ namespace BusinessLogic.Services
 
         public async Task Update(Category category)
         {
-            await Task.Run
-              (
-              () =>
-              {
-                  _context.Attach(category);
-                  _context.Entry(category).State = EntityState.Modified;
-              });
+            _context.Update(category);
             await _context.SaveChangesAsync();
         }
     }

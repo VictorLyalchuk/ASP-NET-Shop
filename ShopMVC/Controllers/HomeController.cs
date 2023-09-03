@@ -57,8 +57,9 @@ namespace ShopMVC.Controllers
             var productsCartViewModel = products.Select(
                 p=>new ProductCartViewModel { 
                     Product=p,
-                    IsInCart=IsProductInCart(p.Id)
-                    }
+                    IsInCart=IsProductInCart(p.Id),
+                    StorageQuantity = GetStorageQuantityForProduct(p.Id)
+                }
                 ).ToList();
 
             //for defination active link or disabled
@@ -78,6 +79,11 @@ namespace ShopMVC.Controllers
             Dictionary<int, int> IdCount = HttpContext.Session.GetObject<Dictionary<int, int>>("mycart");
             if (IdCount == null) return false;
             return IdCount.ContainsKey(id);
+        }
+        private int GetStorageQuantityForProduct(int productId)
+        {
+            var storageInfo = _context.Storage.FirstOrDefault(s => s.ProductId == productId);
+            return storageInfo?.ProductQuantity ?? 0; 
         }
         public IActionResult Privacy()
         {

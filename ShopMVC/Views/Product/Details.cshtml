@@ -29,7 +29,6 @@
             <p class="card-text">@Model.Product.Description</p>
             <p class="card-text">Category:<strong> @Model.Product.Category?.Name </strong> </p>
             <p class="fw-bold">Price <span class="badge bg-primary">@string.Format("{0:N}",Model.Product.Price) ₴</span></p>
-            @*href="~\Product\Index"*@
             @if (ViewBag.ReturnUrl == null)
             {
                 <a asp-controller="Product" asp-action="Index" class="btn btn-primary">Go to Back</a>
@@ -45,8 +44,12 @@
             }
 
 
+            @if (Model.StorageQuantity > 0)
+            {
+                <button type="button" class="btn btn-secondary" disabled>Out of Stock</button>
 
-            @if (!Model.IsInCart)
+            }
+            else if (!Model.IsInCart) 
             {
                 <a asp-controller="Cart" asp-action="Add" asp-route-id=@Model.Product.Id class="btn btn-danger">Add To Cart</a>
             }

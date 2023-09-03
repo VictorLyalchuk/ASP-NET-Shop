@@ -4,6 +4,7 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ShopMVCDbContext))]
-    partial class ShopMVCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230903192455_AddStorageToProduct3")]
+    partial class AddStorageToProduct3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,10 +197,10 @@ namespace DataAccess.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductQuantity")
+                    b.Property<int?>("ProductId1")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductsId")
+                    b.Property<int>("ProductQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -206,7 +209,7 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[ProductId] IS NOT NULL");
 
-                    b.HasIndex("ProductsId");
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("Storage");
                 });
@@ -452,11 +455,11 @@ namespace DataAccess.Migrations
                         .WithOne("Storage")
                         .HasForeignKey("DataAccess.Entities.Storage", "ProductId");
 
-                    b.HasOne("DataAccess.Entities.Product", "Products")
+                    b.HasOne("DataAccess.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductsId");
+                        .HasForeignKey("ProductId1");
 
-                    b.Navigation("Products");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

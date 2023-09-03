@@ -40,6 +40,7 @@ builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();

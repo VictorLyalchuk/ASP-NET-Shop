@@ -2,6 +2,7 @@
 using DataAccess.Data;
 using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client.Extensions.Msal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,13 +36,7 @@ namespace BusinessLogic.Services
         }
         public async Task Update(Product product)
         {
-            await Task.Run
-              (
-              () =>
-              {
-                  _context.Attach(product);
-                  _context.Entry(product).State = EntityState.Modified;
-              });
+            _context.Update(product);
             await _context.SaveChangesAsync();
         }
         public async Task <Product?> Get(int? id)
@@ -53,7 +48,6 @@ namespace BusinessLogic.Services
         {
            return await _context.Products.Include(p => p.Category).ToListAsync();
         }
-
         //public async Task<List<Product>> GetAllById(int[] id)
         //{
         //    List<Product> products = id.Select(a => Get(a)).ToList();

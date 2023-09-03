@@ -6,6 +6,7 @@ namespace ShopMVC.Models
     {
         public Product Product { get; set; }
         public bool IsInCart { get; set; }
-        public int Quantity { get; set; } 
+        public int Quantity { get; set; }
+        public int StorageQuantity { get; set; }
     }
 }

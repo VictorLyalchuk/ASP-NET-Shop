@@ -40,5 +40,7 @@ namespace DataAccess.Entities
         public int CategoryId { get; set; }
         //navigation property
         public Category? Category { get; set; }
+        public int? StorageId { get; set; }
+        public Storage? Storage { get; set; }
     }
 }

@@ -24,6 +24,11 @@ namespace DataAccess.EntiitesConfiguration
             builder.HasOne<Category>(x => x.Category)
                    .WithMany(x => x.Products)
                    .HasForeignKey(x => x.CategoryId);
+
+            builder.HasOne(p => p.Storage)
+                   .WithOne()
+                   .HasForeignKey<Storage>(s => s.ProductId)
+                   .IsRequired(false);
         }
         public void Configure(EntityTypeBuilder<Order> builder)
         {

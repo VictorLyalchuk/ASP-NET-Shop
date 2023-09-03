@@ -16,10 +16,14 @@ namespace ShopMVC.Controllers
     {
         private readonly IProductsService _productsService;
         private readonly ICategoriesService _categoriesService;
-        public ProductController(IProductsService productsService, ICategoriesService categoriesService)
+        private readonly IStorageService _storageService;
+
+        public ProductController(IProductsService productsService, ICategoriesService categoriesService, IStorageService storageService)
         {
             _productsService = productsService;
             _categoriesService = categoriesService;
+            _storageService = storageService;
+            _storageService = storageService;
         }
         [AllowAnonymous]
         public async Task<IActionResult> Index()
@@ -40,6 +44,7 @@ namespace ShopMVC.Controllers
             var productCartViewModel = new ProductCartViewModel
             {
                 Product = product,
+                StorageQuantity = GetStorageQuantityForProduct(product.Id)
             };
             return View(productCartViewModel);
         }
@@ -83,6 +88,16 @@ namespace ShopMVC.Controllers
         {
             await _productsService.Update(product);
             return RedirectToAction("Index");
+        }
+        private int GetStorageQuantityForProduct(int productId)
+        {
+            var quantity = _storageService.GetStorageQuantityForProduct(productId);
+            if (quantity != null)
+            {
+                return quantity.Result;
+            }
+
+            return 0;
         }
     }
 }
