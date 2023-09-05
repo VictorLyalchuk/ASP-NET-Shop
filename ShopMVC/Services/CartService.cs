@@ -11,11 +11,13 @@ namespace ShopMVC.Services
     public class CartService : ICartService
     {
         private readonly HttpContext _httpContext;
-        private readonly IProductsService _productsService; 
-        public CartService(IHttpContextAccessor httpContext, IProductsService productsService)
+        private readonly IProductsService _productsService;
+        private readonly IStorageService _storageService;
+        public CartService(IHttpContextAccessor httpContext, IProductsService productsService, IStorageService storageService)
         {
             _httpContext = httpContext.HttpContext;
             _productsService = productsService;
+            _storageService = storageService;
         }
         public async Task<List<ProductCartViewModel>> GetProducts()
         {
@@ -107,32 +109,35 @@ namespace ShopMVC.Services
         public async Task UpdateQuantity(int productId, int quantity)
         {
             var product = await _productsService.Get(productId);
-            var productPrice = product.Price;
-
-            if (product == null)
+            //var productPrice = product.Price;
+            var productSorage = await _storageService.Get(productId);
+            if (product == null || productSorage == null)
             {
                 return;
             }
 
-            var cartJson = _httpContext.Session.GetString("mycart");
-            Dictionary<int, int> cart;
-
-            if (!string.IsNullOrEmpty(cartJson))
+            if (productSorage.ProductQuantity >= quantity)
             {
-                cart = JsonConvert.DeserializeObject<Dictionary<int, int>>(cartJson);
-            }
-            else
-            {
-                cart = new Dictionary<int, int>();
-            }
+                var cartJson = _httpContext.Session.GetString("mycart");
+                Dictionary<int, int> cart;
 
-            var existingItem = cart.ContainsKey(productId);
+                if (!string.IsNullOrEmpty(cartJson))
+                {
+                    cart = JsonConvert.DeserializeObject<Dictionary<int, int>>(cartJson);
+                }
+                else
+                {
+                    cart = new Dictionary<int, int>();
+                }
 
-            if (existingItem)
-            {
-                cart[productId] = quantity;
+                var existingItem = cart.ContainsKey(productId);
+
+                if (existingItem)
+                {
+                    cart[productId] = quantity;
+                }
+                _httpContext.Session.SetString("mycart", JsonConvert.SerializeObject(cart));
             }
-            _httpContext.Session.SetString("mycart", JsonConvert.SerializeObject(cart));
         }
     }
 }

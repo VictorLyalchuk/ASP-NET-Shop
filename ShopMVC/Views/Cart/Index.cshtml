@@ -29,20 +29,20 @@
                             <th scope="row"><div class="d-flex justify-content-center">@product.Product.Id</div></th>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                <img style="width: 100px" src="@(product.Product.ImagePath??productImagePlaceholder)" class="card-img-top" alt="...">
+                                    <img style="width: 100px" src="@(product.Product.ImagePath??productImagePlaceholder)" class="card-img-top" alt="...">
                                 </div>
                             </td>
                             <td><div class="d-flex justify-content-center">@product.Product.Name</div></td>
                             <td>
-                                <div class ="d-flex justify-content-center">
+                                <div class="d-flex justify-content-center">
 
                                     <form asp-controller="Cart" asp-action="UpdateQuantity" method="post">
-                                <input type="hidden" name="productId" value="@product.Product.Id" />
+                                        <input type="hidden" name="productId" value="@product.Product.Id" />
                                         <button style="width: 25px;" class="btn btn-sm btn-danger decrease" name="quantity" value="@(product.Quantity - 1)" data-product-id="@product.Product.Id">-</button>
-                                <span style="width: 30px; display: inline-block; text-align: center;" id="quantity-@product.Product.Id">@product.Quantity</span>
+                                        <span style="width: 30px; display: inline-block; text-align: center;" id="quantity-@product.Product.Id">@product.Quantity</span>
                                         <button style="width: 25px;" class="btn btn-sm btn-success increase" name="quantity" value="@(product.Quantity + 1)" data-product-id="@product.Product.Id">+</button>
                                     </form>
-                            </div>
+                                </div>
                             </td>
                             <td><div class="d-flex justify-content-center" id="product-price-@product.Product.Id">@string.Format("{0:N}", product.Product.Price) ₴</div></td>
                             <td>
@@ -55,9 +55,9 @@
                                 <div class="d-flex justify-content-center">
 
                                     <a asp-controller="Cart" asp-action="Remove" asp-route-id=@product.Product.Id class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover me-2">
-                                       <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i>
                                     </a>
-                                    
+
                                 </div>
                             </td>
                         </tr>
