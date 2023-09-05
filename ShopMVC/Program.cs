@@ -10,12 +10,20 @@ using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using ShopMVC.Services;
 using ShopMVC.Interfaces;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using NuGet.Protocol.Core.Types;
+using DataAccess.Interfaces;
+using DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 //get connection string
 string connection = builder.Configuration.GetConnectionString("ShopMVCConnection") ?? throw new InvalidOperationException("Connection string 'ShopMVCConnection' not found.");
+
+//get remote connection string
+//string connection = builder.Configuration.GetConnectionString("RemoteDBSomeeCom") ?? throw new InvalidOperationException("Connection string 'RemoteDBSomeeCom' not found.");
+
 //add contect WebAppLibraryContext as service by application
 builder.Services.AddDbContext<ShopMVCDbContext>(options => options.UseSqlServer(connection));
 
@@ -42,6 +50,9 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddHttpContextAccessor();
+
+//add Repository for all entities
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 

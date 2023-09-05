@@ -57,7 +57,7 @@ namespace ShopMVC.Controllers
         public async Task<IActionResult> Create() {
             var categories = await _categoriesService.GetAll();
             ViewBag.ListCategory = new SelectList(categories,"Id","Name");
-           return View();
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> Create(Product product)

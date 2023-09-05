@@ -38,8 +38,11 @@ namespace ShopMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int productId, int quantity)
         {
-            await _cartService.UpdateQuantity(productId, quantity);
-            return Json(new { success = true });
+            if(quantity > 0)
+            {
+                await _cartService.UpdateQuantity(productId, quantity);
+            }
+            return RedirectToAction(nameof(Index), "Cart");
         }
     }
 }

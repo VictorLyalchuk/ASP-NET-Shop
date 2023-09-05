@@ -31,7 +31,7 @@
             <p class="fw-bold">Price <span class="badge bg-primary">@string.Format("{0:N}",Model.Product.Price) ₴</span></p>
             @if (ViewBag.ReturnUrl == null)
             {
-                <a asp-controller="Product" asp-action="Index" class="btn btn-primary">Go to Back</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Go to Back</a>
             }
             else
             {
@@ -44,7 +44,7 @@
             }
 
 
-            @if (Model.StorageQuantity > 0)
+            @if (Model.StorageQuantity < 1)
             {
                 <button type="button" class="btn btn-secondary" disabled>Out of Stock</button>
 

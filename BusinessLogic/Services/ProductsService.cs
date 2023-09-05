@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Entities;
+using DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client.Extensions.Msal;
 using System;
@@ -13,45 +14,45 @@ namespace BusinessLogic.Services
 {
     public class ProductsService : IProductsService
     {
-        private readonly ShopMVCDbContext _context;
-        public ProductsService(ShopMVCDbContext context)
+        private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<Category> _categoryRepository;
+        public ProductsService(IRepository<Product> productRepository, IRepository<Category> categoryRepository)
         {
-            _context = context;
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
         public async Task Create(Product product)
         {
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
+            await _productRepository.Insert(product);
+            await _productRepository.Save();
         }
         public async Task Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productRepository.GetByID(id);
             if (product == null) return;
             await Task.Run(
             () =>
             {
-                _context.Remove(product);
+                _productRepository.Delete(product);
             });
-            await _context.SaveChangesAsync();
+            await _productRepository.Save();
         }
         public async Task Update(Product product)
         {
-            _context.Update(product);
-            await _context.SaveChangesAsync();
+            await _productRepository.Update(product);
+            await _productRepository.Save();
         }
-        public async Task <Product?> Get(int? id)
+        public async Task<Product?> Get(int? id)
         {
-            return await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
-
+            return GetAll().Result.FirstOrDefault(p => p.Id == id);
         }
-        public async Task <List<Product>> GetAll()
+        public async Task<List<Product>> GetAll()
         {
-           return await _context.Products.Include(p => p.Category).ToListAsync();
+            return _productRepository.Get(includeProperties: new[] { "Category" }).ToList();
         }
-        //public async Task<List<Product>> GetAllById(int[] id)
-        //{
-        //    List<Product> products = id.Select(a => Get(a)).ToList();
-        //    return products;
-        //}
+        public async Task<List<Category>> GetAllCategory()
+        {
+            return _categoryRepository.Get().ToList();
+        }
     }
 }

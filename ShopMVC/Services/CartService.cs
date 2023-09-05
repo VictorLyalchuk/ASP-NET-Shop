@@ -133,8 +133,6 @@ namespace ShopMVC.Services
                 cart[productId] = quantity;
             }
             _httpContext.Session.SetString("mycart", JsonConvert.SerializeObject(cart));
-
         }
-
     }
 }

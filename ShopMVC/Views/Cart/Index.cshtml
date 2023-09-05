@@ -35,15 +35,19 @@
                             <td><div class="d-flex justify-content-center">@product.Product.Name</div></td>
                             <td>
                                 <div class ="d-flex justify-content-center">
-                                <button style="width: 25px;" class="btn btn-sm btn-danger decrease" data-product-id="@product.Product.Id">-</button>
+
+                                    <form asp-controller="Cart" asp-action="UpdateQuantity" method="post">
+                                <input type="hidden" name="productId" value="@product.Product.Id" />
+                                        <button style="width: 25px;" class="btn btn-sm btn-danger decrease" name="quantity" value="@(product.Quantity - 1)" data-product-id="@product.Product.Id">-</button>
                                 <span style="width: 30px; display: inline-block; text-align: center;" id="quantity-@product.Product.Id">@product.Quantity</span>
-                                <button style="width: 25px;" class="btn btn-sm btn-success increase" data-product-id="@product.Product.Id">+</button>
-                                </div>
+                                        <button style="width: 25px;" class="btn btn-sm btn-success increase" name="quantity" value="@(product.Quantity + 1)" data-product-id="@product.Product.Id">+</button>
+                                    </form>
+                            </div>
                             </td>
                             <td><div class="d-flex justify-content-center" id="product-price-@product.Product.Id">@string.Format("{0:N}", product.Product.Price) ₴</div></td>
                             <td>
                                 <div class="d-flex justify-content-center" id="product-total-@product.Product.Id">
-                                    @string.Format("{0:N}", Model.Where(p => p.Product.Id == product.Product.Id).Sum(p => p.Product.Price * p.Quantity)) ₴
+                                    @string.Format("{0:N}", product.Product.Price * product.Quantity) ₴
                                 </div>
                             </td>
                             <td><div class="d-flex justify-content-center">@product.Product.Category?.Name</div></td>
@@ -60,7 +64,7 @@
                     }
                 </tbody>
             </table>
-            <p><b>Total:</b> <span id="total-amount">@Model.Sum(p => p.Product.Price * p.Quantity) ₴</span></p>
+            <p><b>Total:</b> <span id="total-amount">@string.Format("{0:N}", Model.Sum(p => p.Product.Price * p.Quantity)) ₴</span></p>
             <a asp-controller="Order" asp-action="CreateOrder" class="btn btn-primary">Confirm</a>
         </div>
 
@@ -71,5 +75,3 @@
     }
 
 </div>
-
-<script src="~/js/product_view_function.js"></script>
