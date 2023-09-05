@@ -18,11 +18,13 @@ namespace ShopMVC.Controllers
         private readonly ShopMVCDbContext _context;
         private readonly IProductsService _productsService;
         private readonly IOrdersService _ordersService;
-        public OrderController(ShopMVCDbContext context, IOrdersService cordersService, IProductsService productsService) 
+        private readonly IStorageService _storageService;
+        public OrderController(ShopMVCDbContext context, IOrdersService cordersService, IProductsService productsService, IStorageService storageService) 
         {
             _context = context;
             _ordersService = cordersService;
             _productsService = productsService;
+            _storageService = storageService;
         }
         [Authorize]
         public async Task<IActionResult> Index()
@@ -30,10 +32,10 @@ namespace ShopMVC.Controllers
             var viewModel = await _ordersService.GetAll();
             return View(viewModel);
         }
-        public IActionResult CreateOrder() 
+        public async Task <IActionResult> CreateOrder(List<int> productId, List<int> quantity) 
         {
-            _ordersService.Create();
-
+            await _ordersService.Create();
+            await _storageService.UpdateQuantityDecrease(productId, quantity);
             HttpContext.Session.Remove("mycart");
             return RedirectToAction(nameof(Index));
         }

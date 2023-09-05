@@ -17,5 +17,6 @@ namespace BusinessLogic.Interfaces
         Task Delete(int id);
         Task<int> GetStorageQuantityForProduct(int idProduct);
         Task<Product> UpdateQuantity(int productId, int quantity);
+        Task UpdateQuantityDecrease(List<int> productId, List<int> quantity);
     }
 }

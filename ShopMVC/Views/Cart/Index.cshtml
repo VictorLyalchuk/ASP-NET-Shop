@@ -64,8 +64,18 @@
                     }
                 </tbody>
             </table>
-            <p><b>Total:</b> <span id="total-amount">@string.Format("{0:N}", Model.Sum(p => p.Product.Price * p.Quantity)) ₴</span></p>
-            <a asp-controller="Order" asp-action="CreateOrder" class="btn btn-primary">Confirm</a>
+            <p class="d-flex justify-content-end"><b>Total: </b> <div id="total-amount" class="d-flex justify-content-end">@string.Format("{0:N}", Model.Sum(p => p.Product.Price * p.Quantity)) ₴</div></p>
+            
+            <form asp-controller="Order" asp-action="CreateOrder" method="post" class="d-flex justify-content-end">
+                @foreach (var product in Model)
+                {
+                    <input type="hidden" name="productId[]" value="@product.Product.Id" />
+                    <input type="hidden" name="quantity[]" value="@product.Quantity" />
+                }
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </form>
+            
+@*            <a asp-controller="Order" asp-action="CreateOrder" class="btn btn-primary">Confirm</a>*@
         </div>
 
     }

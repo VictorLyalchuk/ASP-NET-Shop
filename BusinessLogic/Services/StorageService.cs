@@ -1,6 +1,8 @@
 ﻿using BusinessLogic.Interfaces;
+using DataAccess;
 using DataAccess.Data;
 using DataAccess.Entities;
+using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,15 +15,17 @@ namespace BusinessLogic.Services
 {
     public class StorageService : IStorageService
     {
-        private readonly ShopMVCDbContext _context;
-        public StorageService(ShopMVCDbContext context)
+        private readonly IRepository<Storage> _storageRepository;
+        private readonly IRepository<Product> _productRepository;
+        public StorageService(IRepository <Storage> storageRepository, IRepository<Product> productRepository)
         {
-            _context = context;
+            _storageRepository = storageRepository;
+            _productRepository = productRepository;
         }
         public async Task Create(Storage storage)
         {
-            await _context.Storage.AddAsync(storage);
-            await _context.SaveChangesAsync();
+            await _storageRepository.Insert(storage);
+            await _storageRepository.Save();
         }
         public Storage CreateByQuantity(Product product, int quantity)
         {
@@ -35,12 +39,12 @@ namespace BusinessLogic.Services
         }
         public async Task<Storage?> Get(int? id)
         {
-            return await _context.Storage.FirstOrDefaultAsync(p => p.ProductId == id);
+            return GetAll().Result.FirstOrDefault(p => p.ProductId == id);
 
         }
         public async Task <Product> UpdateQuantity(int productId, int quantity)
         {
-            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await _productRepository.GetByID(productId); 
             if (product != null)
             {
                 var existingStorage = await Get(productId);
@@ -58,31 +62,64 @@ namespace BusinessLogic.Services
                     product.StorageId = existingStorage.Id;
                 }
 
-                var newpoduct = _context.Products.Update(product);
+                var newpoduct = _productRepository.Update(product);
             }
             return product;
         }
-
-        public Task Delete(int id)
+        public async Task UpdateQuantityDecrease(List<int> productId, List<int> quantity)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < productId.Count; i++)
+            {
+                int currentProductId = productId[i];
+                int currentQuantity = quantity[i];
+
+                var product = await _productRepository.GetByID(currentProductId);
+                if (product != null)
+                {
+                    var existingStorage = await Get(currentProductId);
+                    if (existingStorage == null)
+                    {
+                        Storage storage = CreateByQuantity(product, currentQuantity);
+                        await Create(storage);
+                        product.StorageId = storage.Id;
+                        product.Storage = storage;
+                    }
+                    else
+                    {
+                        existingStorage.ProductQuantity -= currentQuantity;
+                        await Update(existingStorage);
+                        product.StorageId = existingStorage.Id;
+                    }
+                    await _productRepository.Update(product);
+                }
+            }
+        }
+        public async Task Delete(int id)
+        {
+            var storage = await _storageRepository.GetByID(id);
+            if (storage == null) return;
+            await Task.Run(
+            () =>
+            {
+                _storageRepository.Delete(storage);
+            });
+            await _storageRepository.Save();
         }
 
-        public Task<List<Storage>> GetAll()
+        public async Task<List<Storage>> GetAll()
         {
-            throw new NotImplementedException();
+            return _storageRepository.Get().ToList();
         }
 
         public async Task Update(Storage storage)
         {
-            _context.Update(storage);
-            await _context.SaveChangesAsync();
+            await _storageRepository.Update(storage);
+            await _storageRepository.Save();
         }
         public async Task <int> GetStorageQuantityForProduct (int idProduct)
         {
-            var storage = await _context.Storage.FirstOrDefaultAsync(p => p.ProductId == idProduct);
-            return storage != null ? storage.ProductQuantity : 0;
-            //return await _context.Storage.Where(p => p.ProductId == idProduct).FirstOrDefault(p => p.ProductQuantity);
+            var storage = Get(idProduct);
+            return storage.Result != null ? storage.Result.ProductQuantity : 0;
         }
     }
 }
