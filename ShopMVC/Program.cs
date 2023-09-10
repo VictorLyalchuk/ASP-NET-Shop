@@ -49,10 +49,15 @@ builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddHttpContextAccessor();
 
 //add Repository for all entities
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+//Auto Mapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 var app = builder.Build();
 

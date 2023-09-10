@@ -40,7 +40,6 @@ namespace BusinessLogic.Services
         public async Task<Storage?> Get(int? id)
         {
             return GetAll().Result.FirstOrDefault(p => p.ProductId == id);
-
         }
         public async Task <Product> UpdateQuantity(int productId, int quantity)
         {

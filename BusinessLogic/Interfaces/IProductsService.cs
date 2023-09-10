@@ -1,4 +1,7 @@
-﻿using DataAccess.Entities;
+﻿using BusinessLogic.DTOs;
+using DataAccess.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +12,11 @@ namespace BusinessLogic.Interfaces
 {
     public interface IProductsService
     {
-        Task <List<Product>> GetAll();
-        //Task <List<Product>> GetAllById(int[] id);
-        Task Create(Product product);
-        Task Update(Product product);
+        Task <List<ProductDTO>> GetAll();
+        Task <List<ProductDTO>> GetAllByPrice();
+        Task <ProductDTO?> Get(int? id);
+        Task Create(CreateProductDTO createProductDTO);
+        Task Update(ProductDTO ProductDTO);
         Task Delete(int id);
-        Task <Product?> Get(int? id);
-        
     }
 }

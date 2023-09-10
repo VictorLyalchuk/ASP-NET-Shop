@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using DataAccess.Data;
 using DataAccess.Entities;
@@ -60,15 +61,15 @@ namespace ShopMVC.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create(CreateProductDTO createproductDTO)
         {
             if (!ModelState.IsValid)
             {
                 var categories = await _categoriesService.GetAll();
                 ViewBag.ListCategory = new SelectList(categories, "Id", "Name");
-                return View(product);
+                return View(createproductDTO);
             }
-            await _productsService.Create(product);
+            await _productsService.Create(createproductDTO);
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -84,9 +85,9 @@ namespace ShopMVC.Controllers
             return NotFound();
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(Product product)
+        public async Task<IActionResult> Edit(ProductDTO ProductDTO)
         {
-            await _productsService.Update(product);
+            await _productsService.Update(ProductDTO);
             return RedirectToAction("Index");
         }
         private int GetStorageQuantityForProduct(int productId)
@@ -96,7 +97,6 @@ namespace ShopMVC.Controllers
             {
                 return quantity.Result;
             }
-
             return 0;
         }
     }

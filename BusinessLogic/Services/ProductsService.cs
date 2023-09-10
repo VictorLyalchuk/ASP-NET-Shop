@@ -1,14 +1,10 @@
-﻿using BusinessLogic.Interfaces;
-using DataAccess.Data;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using DataAccess.Entities;
 using DataAccess.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client.Extensions.Msal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BusinessLogic.Services
 {
@@ -16,13 +12,20 @@ namespace BusinessLogic.Services
     {
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<Category> _categoryRepository;
-        public ProductsService(IRepository<Product> productRepository, IRepository<Category> categoryRepository)
+        private readonly IMapper _mapper;
+        private readonly IFilesService _filesService;
+        public ProductsService(IRepository<Product> productRepository, IRepository<Category> categoryRepository, IMapper mapper, IFilesService filesService)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
+            _filesService = filesService;
         }
-        public async Task Create(Product product)
+        public async Task Create(CreateProductDTO createProductDTO)
         {
+            var product = _mapper.Map<Product>(createProductDTO);
+            product.ImagePath = _filesService.SaveProductImage(createProductDTO.Image).Result;
+            product.Category = await _categoryRepository.GetByID(createProductDTO.CategoryId);
             await _productRepository.Insert(product);
             await _productRepository.Save();
         }
@@ -33,26 +36,44 @@ namespace BusinessLogic.Services
             await Task.Run(
             () =>
             {
+                _filesService.DeleteProductImage(product.ImagePath!);
                 _productRepository.Delete(product);
             });
             await _productRepository.Save();
         }
-        public async Task Update(Product product)
+        public async Task Update(ProductDTO ProductDTO)
         {
-            await _productRepository.Update(product);
-            await _productRepository.Save();
+            //var product = _mapper.Map<Product>(ProductDTO);
+            var baseProduct = _productRepository.GetByID(ProductDTO.Id).Result;
+            if (baseProduct != null)
+            {
+                baseProduct.ImagePath = await _filesService.UpdateProductImage(baseProduct.ImagePath!, ProductDTO.Image);
+                await _productRepository.Update(baseProduct);
+                await _productRepository.Save();
+                //product.ImagePath = await _filesService.UpdateProductImage(baseProduct.ImagePath!, ProductDTO.Image);
+                //await _productRepository.Update(product);
+                //await _productRepository.Save();
+            }
         }
-        public async Task<Product?> Get(int? id)
+        public async Task<ProductDTO?> Get(int? id)
         {
             return GetAll().Result.FirstOrDefault(p => p.Id == id);
+            //return _productRepository.Get(filter: x => x.Id == id, includeProperties: new[] { "Category" }).SingleOrDefault();
         }
-        public async Task<List<Product>> GetAll()
+        public async Task<List<ProductDTO>> GetAllByPrice()
         {
-            return _productRepository.Get(includeProperties: new[] { "Category" }).ToList();
+            var products = _productRepository.Get(orderBy: q => q.OrderBy(p => p.Price), includeProperties: new[] { "Category" }).ToList();
+            return _mapper.Map<List<ProductDTO>>(products);
+            //return _productRepository.Get(orderBy: q => q.OrderBy(p => p.Price), includeProperties: new[] { "Category" }).ToList();
         }
-        public async Task<List<Category>> GetAllCategory()
+        public async Task<List<ProductDTO>> GetAll()
         {
-            return _categoryRepository.Get().ToList();
+            var products = _productRepository.Get(includeProperties: new[] { "Category" }).ToList();
+            return _mapper.Map<List<ProductDTO>>(products);
         }
+        //public async Task<List<Category>> GetAllCategory()
+        //{
+        //    return _categoryRepository.Get().ToList();
+        //}
     }
 }

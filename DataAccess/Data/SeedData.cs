@@ -30,7 +30,7 @@ namespace DataAccess.Data
                 },
                  new Product(){
                     Id=3,
-                    Name="Ноутбук Lenovo IdeaPad 1 15AMN7 (82VG00HHRA)",
+                    Name="Ноутбук Lenovo IdeaPad 1",
                     Description="Екран 15.6\" IPS (1920x1080) Full HD, матовий / AMD Ryzen 3 7320U (2.4 - 4.1 ГГц) / RAM 16 ГБ / SSD 512 ГБ / AMD Radeon 610M Graphics / без ОД / Wi-Fi / Bluetooth / веб-камера / без ОС / 1.58 кг / сірий",
                     Price=19999,
                     ImagePath=@"https://content1.rozetka.com.ua/goods/images/big/334484472.jpg",
@@ -46,7 +46,7 @@ namespace DataAccess.Data
                 },
                 new Product(){
                     Id=5,
-                    Name="Мобільний телефон Samsung Galaxy A24 6/128GB Black (SM-A245FZKVSEK)",
+                    Name="Смартфон Samsung Galaxy A24",
                     Description="Екран (6.5\", Super AMOLED, 2340x1080) / Mediatek Helio G99 (2 x 2.6 ГГц + 6 x 2.0 ГГц) / основна потрійна камера: 50 Мп + 5 Мп + 2 Мп, фронтальна камера: 13 Мп / RAM2 ГБ вбудованої пам'яті + microSD (до 1 ТБ) / 3G / LTE / GPS / ГЛОНАСС / BDS / підтримка 2х SIM-карток (Nano-SIM) / Android 13 / 5000 мА * год",
                     Price=8999,
                     ImagePath=@"https://content.rozetka.com.ua/goods/images/big/328132324.jpg",
@@ -54,7 +54,7 @@ namespace DataAccess.Data
                 },
                 new Product(){
                     Id=6,
-                    Name="Мобільний телефон Apple iPhone 14 128GB Midnight (MPUF3RX/A)",
+                    Name="Смартфон Apple iPhone 14",
                     Description="Екран (6.1\", OLED (Super Retina XDR), 2532x1170) / Apple A15 Bionic / подвійна основна камера: 12 Мп + 12 Мп, фронтальна камера: 12 Мп / 128 ГБ вбудованої пам'яті / 3G / LTE / 5G / GPS / підтримка 2 SIM-карток (eSIM) / iOS 16\r\n\r\n",
                     Price=36999,
                     ImagePath=@"https://content1.rozetka.com.ua/goods/images/big/284913535.jpg",

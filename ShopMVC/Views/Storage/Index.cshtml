@@ -36,7 +36,7 @@
                             </td>
                             <td>@product.Product.Name</td>
                             <td>@string.Format("{0:N}",product.Product.Price) ₴</td>
-                            <td>@product.Product.Category?.Name</td>
+                            <td>@product.Product.CategoryName</td>
                             <td><div class="d-flex justify-content-center">@product.StorageQuantity</div></td>
                             <td>
                                 <div class="d-flex justify-content-center">
@@ -44,7 +44,7 @@
                                     {
                                         <form asp-controller="Storage" asp-action="UpdateQuantity" method="post" class="d-flex justify-content-center">
                                             <input type="hidden" name="productId" value="@product.Product.Id" />
-                                            <input type="number" name="quantity" value="0" min="0" max="@product.Product.Storage?.ProductQuantity ?? 0" />
+                                            <input type="number" name="quantity" value="0" min="0" max="@product.Product.StorageQuantity ?? 0" />
                                             <input type="hidden" name="storageQuantity" value="@product.StorageQuantity" />
 
                                             <button type="submit" class="btn btn-success">Accept</button>

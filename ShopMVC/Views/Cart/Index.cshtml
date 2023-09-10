@@ -50,8 +50,8 @@
                                     @string.Format("{0:N}", product.Product.Price * product.Quantity) ₴
                                 </div>
                             </td>
-                            <td><div class="d-flex justify-content-center">@product.Product.Category?.Name</div></td>
-                            <td>
+@*                            <td><div class="d-flex justify-content-center">@product.Product.Category?.Name</div></td>
+*@                            <td>
                                 <div class="d-flex justify-content-center">
 
                                     <a asp-controller="Cart" asp-action="Remove" asp-route-id=@product.Product.Id class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover me-2">

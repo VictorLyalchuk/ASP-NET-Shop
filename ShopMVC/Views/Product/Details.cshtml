@@ -1,5 +1,4 @@
-﻿@*@model Product*@
-@model ProductCartViewModel
+﻿@model ProductCartViewModel
 
 @{
     string productImagePlaceholder = @"https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png";
@@ -27,7 +26,7 @@
         <div class="card-body">
             <h5 class="card-title">@Model.Product.Name</h5>
             <p class="card-text">@Model.Product.Description</p>
-            <p class="card-text">Category:<strong> @Model.Product.Category?.Name </strong> </p>
+            <p class="card-text">Category:<strong> @Model.Product.CategoryName</strong> </p>
             <p class="fw-bold">Price <span class="badge bg-primary">@string.Format("{0:N}",Model.Product.Price) ₴</span></p>
             @if (ViewBag.ReturnUrl == null)
             {

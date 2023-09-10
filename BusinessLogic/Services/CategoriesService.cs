@@ -51,6 +51,5 @@ namespace BusinessLogic.Services
         {
             return _categoryRepository.Get().ToList();
         }
-
     }
 }

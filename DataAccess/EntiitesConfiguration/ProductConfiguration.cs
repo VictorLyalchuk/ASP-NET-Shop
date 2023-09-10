@@ -28,7 +28,8 @@ namespace DataAccess.EntiitesConfiguration
             builder.HasOne(p => p.Storage)
                    .WithOne()
                    .HasForeignKey<Storage>(s => s.ProductId)
-                   .IsRequired(false);
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.Cascade); ;
         }
         public void Configure(EntityTypeBuilder<Order> builder)
         {

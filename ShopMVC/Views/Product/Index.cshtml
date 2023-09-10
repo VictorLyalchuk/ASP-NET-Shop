@@ -1,5 +1,6 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@model List<Product>
+﻿@using BusinessLogic.DTOs;
+@using Microsoft.AspNetCore.Identity;
+@model List<ProductDTO>
 @inject UserManager<User> UserManager
 @{
     var user = await UserManager.GetUserAsync(User);
@@ -42,7 +43,7 @@
                             </td>
                             <td>@product.Name</td>
                             <td>@string.Format("{0:N}",product.Price) ₴</td>
-                            <td>@product.Category?.Name</td>
+                            <td>@product.CategoryName</td>
                             <td>
                                 <div class="d-flex justify-content-evenly">
                                     <a asp-controller="Product" asp-action="Details" asp-route-id=@product.Id asp-route-returnUrl="@Context.Request.Path" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover me-2">
