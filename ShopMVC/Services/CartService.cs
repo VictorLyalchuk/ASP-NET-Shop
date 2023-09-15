@@ -27,7 +27,6 @@ namespace ShopMVC.Services
             foreach (var idProduct in IdCountProducts.Keys)
             {
                 var product = await _productsService.Get(idProduct);
-                //product.Price *= IdCountProducts[idProduct];
                 products.Add(new ProductCartViewModel
                 {
                     Product = product,

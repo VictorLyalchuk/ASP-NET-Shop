@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Interfaces;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using DataAccess.Data;
 using DataAccess.Entities;
 using DataAccess.Interfaces;
@@ -14,16 +16,19 @@ namespace BusinessLogic.Services
     public class CategoriesService : ICategoriesService
     {
         private readonly IRepository<Category> _categoryRepository;
-        public CategoriesService(IRepository<Category> categoryRepository)
+        private readonly IMapper _mapper;
+
+        public CategoriesService(IRepository<Category> categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
-        public async Task Create(Category category)
+        public async Task Create(CategoryDTO categoryDTO)
         {
+            var category = _mapper.Map<Category>(categoryDTO);
             await _categoryRepository.Insert(category);
             await _categoryRepository.Save();
         }
-
         public async Task Delete(int id)
         {
             var category = await _categoryRepository.GetByID(id);
@@ -36,20 +41,21 @@ namespace BusinessLogic.Services
             });
             await _categoryRepository.Save();
         }
-        public async Task Update(Category category)
+        public async Task Update(CategoryDTO categoryDTO)
         {
+            var category = _mapper.Map<Category>(categoryDTO);
             await _categoryRepository.Update(category);
             await _categoryRepository.Save();
         }
-
-        public async Task<Category?> Get(int id)
+        public async Task<CategoryDTO?> Get(int id)
         {
-            return GetAll().Result.FirstOrDefault(p => p.Id == id);
+            var category = GetAll().Result.FirstOrDefault(p => p.Id == id);
+            return _mapper.Map<CategoryDTO>(category);
         }
-
-        public async Task<List<Category>> GetAll()
+        public async Task<List<CategoryDTO>> GetAll()
         {
-            return _categoryRepository.Get().ToList();
+            var category = _categoryRepository.Get().ToList();
+            return _mapper.Map<List<CategoryDTO>>(category);
         }
     }
 }

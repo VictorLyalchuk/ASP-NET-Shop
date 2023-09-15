@@ -104,12 +104,10 @@ namespace BusinessLogic.Services
             });
             await _storageRepository.Save();
         }
-
         public async Task<List<Storage>> GetAll()
         {
             return _storageRepository.Get().ToList();
         }
-
         public async Task Update(Storage storage)
         {
             await _storageRepository.Update(storage);

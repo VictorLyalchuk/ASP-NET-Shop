@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities;
+﻿using BusinessLogic.DTOs;
+using DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace BusinessLogic.Interfaces
 {
     public interface ICategoriesService
     {
-        Task <List<Category>> GetAll();
-        Task <Category?> Get(int id);
-        Task Create(Category category);
-        Task Update(Category category);
+        Task <List<CategoryDTO>> GetAll();
+        Task <CategoryDTO?> Get(int id);
+        Task Create(CategoryDTO categoryDTO);
+        Task Update(CategoryDTO categoryDTO);
         Task Delete(int id);
     }
 }

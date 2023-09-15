@@ -11,6 +11,8 @@ namespace ShopMVC.Interfaces
     public interface IOrdersService
     {
         Task<OrdersProductViewModel> GetAll();
-        Task Create();
+        Task CreateAsync();
+        Task<string> CreateBodyAsync();
+        Task<string> ViewOrderAsync();
     }
 }

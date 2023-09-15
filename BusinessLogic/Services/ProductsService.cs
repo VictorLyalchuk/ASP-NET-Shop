@@ -43,22 +43,17 @@ namespace BusinessLogic.Services
         }
         public async Task Update(ProductDTO ProductDTO)
         {
-            //var product = _mapper.Map<Product>(ProductDTO);
             var baseProduct = _productRepository.GetByID(ProductDTO.Id).Result;
             if (baseProduct != null)
             {
                 baseProduct.ImagePath = await _filesService.UpdateProductImage(baseProduct.ImagePath!, ProductDTO.Image);
                 await _productRepository.Update(baseProduct);
                 await _productRepository.Save();
-                //product.ImagePath = await _filesService.UpdateProductImage(baseProduct.ImagePath!, ProductDTO.Image);
-                //await _productRepository.Update(product);
-                //await _productRepository.Save();
             }
         }
         public async Task<ProductDTO?> Get(int? id)
         {
             return GetAll().Result.FirstOrDefault(p => p.Id == id);
-            //return _productRepository.Get(filter: x => x.Id == id, includeProperties: new[] { "Category" }).SingleOrDefault();
         }
         public async Task<List<ProductDTO>> GetAllByPrice()
         {

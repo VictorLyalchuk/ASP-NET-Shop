@@ -29,7 +29,7 @@ namespace ShopMVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            List<Category> categories= await _categoriesService.GetAll();
+            List<CategoryDTO> categories= await _categoriesService.GetAll();
             ViewBag.ListCategories = categories;
             ViewData["ListCategories"] = categories;
             var products = await _productsService.GetAll();

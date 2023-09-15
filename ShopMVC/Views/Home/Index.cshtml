@@ -1,5 +1,4 @@
-﻿@*@model List<ProductCartViewModel>*@
-@model HomePageViewModel
+﻿@model HomePageViewModel
 @{
     ViewData["Title"] = "Home Page";
     string productImagePlaceholder = @"https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png";
@@ -48,7 +47,6 @@ else
                 <div class="row">
                     @foreach (var product in Model.AllProducts)
                     {
-@*                        <partial name="_CardProductPartial" model="product"/>*@
                         await Html.RenderPartialAsync("_CardProductPartial", product);
                     }
                 </div>
@@ -70,14 +68,6 @@ else
                                 @foreach (var product in Model.TopProducts)
                                 {
                                     await Html.RenderPartialAsync("_CardProductPartial", product);
-
-@*                                    <div class="col-4">
-                                        <img src="@product.Product.ImagePath" class="card-img-top mx-auto" alt="@product.Product.Name" style="max-width: 200px;" />
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title">@product.Product.Name</h5>
-                                            <p class="card-text">Price: @product.Product.Price</p>
-                                        </div>
-                                    </div>*@
                                 }
                             </div>
                         </div>

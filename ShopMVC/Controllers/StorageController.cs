@@ -53,7 +53,6 @@ namespace ShopMVC.Controllers
             {
                 return quantity.Result;
             }
-
             return 0; 
         }
     }
