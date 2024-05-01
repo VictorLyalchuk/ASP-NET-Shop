@@ -19,13 +19,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 //get connection string
-string connection = builder.Configuration.GetConnectionString("ShopMVCConnection") ?? throw new InvalidOperationException("Connection string 'ShopMVCConnection' not found.");
+//string connection = builder.Configuration.GetConnectionString("ShopMVCContextConnection") ?? throw new InvalidOperationException("Connection string 'ShopMVCConnection' not found.");
+string connection = builder.Configuration.GetConnectionString("ConnectionSqlite") ?? throw new InvalidOperationException("Connection string 'ShopMVCConnection' not found.");
 
 //get remote connection string
 //string connection = builder.Configuration.GetConnectionString("RemoteDBSomeeCom") ?? throw new InvalidOperationException("Connection string 'RemoteDBSomeeCom' not found.");
 
 //add contect WebAppLibraryContext as service by application
-builder.Services.AddDbContext<ShopMVCDbContext>(options => options.UseSqlServer(connection));
+//builder.Services.AddDbContext<ShopMVCDbContext>(options => options.UseSqlServer(connection));
+builder.Services.AddDbContext<ShopMVCDbContext>(options => options.UseSqlite(connection));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<ShopMVCDbContext>();
 

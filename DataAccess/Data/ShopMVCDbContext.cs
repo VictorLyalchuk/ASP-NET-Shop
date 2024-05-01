@@ -17,7 +17,10 @@ namespace DataAccess.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>().HasData(SeedData.GetCategory());
             modelBuilder.Entity<Product>().HasData(SeedData.GetProduct());
-
+            modelBuilder.Entity<Storage>().HasData(SeedData.GetStorage());
+            modelBuilder.Entity<IdentityRole>()
+                .Property(r => r.ConcurrencyStamp)
+                .HasColumnType("TEXT");
             #region Fluent API => Configurations
             ////Set Primary Key
             //modelBuilder.Entity<Product>().HasKey(x => x.Id);

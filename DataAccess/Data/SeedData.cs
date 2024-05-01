@@ -72,6 +72,15 @@ namespace DataAccess.Data
                 new Category(){ Id=3, Name="Electronice", Description="None"},
             };
         }
-
+        public static List<Storage> GetStorage()
+        {
+            return new List<Storage>()
+            {
+                new Storage(){ Id=1, ProductId = 1, ProductQuantity= 10 },
+                new Storage(){ Id=3, ProductId = 3, ProductQuantity= 10 },
+                new Storage(){ Id=4, ProductId = 4, ProductQuantity= 10 },
+                new Storage(){ Id=6, ProductId = 6, ProductQuantity= 10 },
+            };
+        }
     }
 }
